@@ -1,0 +1,39 @@
+Body {
+  background-color: darkgrey;
+}
+#info {
+  color: rgb(52, 8, 113);
+}
+
+.calcu {
+  background-color: black;
+  color: aliceblue;
+  padding: 0%;
+  border: 2px solid black;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-bottom: 2vh;
+}
+.input {
+  width: fit-content;
+  height: auto;
+  font-size: large;
+  background-color: black;
+  color: aliceblue;
+  padding: 0%;
+  border: 2px solid black;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: auto;
+  margin-bottom: 2vh;
+}
+.inf {
+  background-color: rgb(150, 236, 173);
+  color: rgb(1, 15, 15);
+  width: fit-content;
+  height: auto;
+  display: flex;
+  margin: auto;
+}

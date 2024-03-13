@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="styles.css" />
+    <title>Calculadora</title>
+    <meta charset="utf-8" />
+    <script type="text/javascript">
+      let n1 = 0;
+      let operador = "";
+      let operando = "";
+      let operacionrealizada = false;
+      const vaciar = () => {
+        document.getElementById("pantalla").value = "";
+      };
+
+      const cuadrado = () => {
+        let num = parseFloat(document.getElementById("pantalla").value);
+        if (validar(num)) {
+          document.getElementById("pantalla").value = num * num;
+          rellenar_info();
+        } else {
+          alert("Por favor, introduce un número válido.");
+        }
+      };
+
+      const mod = () => {
+        let num = parseFloat(document.getElementById("pantalla").value);
+        if (validar(num)) {
+          if (num < 0) {
+            document.getElementById("pantalla").value = num * -1;
+            mostrarInfo(num);
+          }
+        } else {
+          alert("Por favor, introduce un numero válido");
+        }
+      };
+
+      const fact = () => {
+        let num = document.getElementById("pantalla");
+        if (isNaN(num.value)) {
+          alert("Por favor, introduce un número válido.");
+          return;
+        }
+        if (num < 0) {
+          alert("No se puede calcular el factorial de un número negativo.");
+          return;
+        }
+        let resultado = 1;
+        for (let i = 2; i <= num.value; i++) {
+          resultado *= i;
+        }
+        num.value = resultado;
+        mostrarInfo(num.value);
+      };
+
+      const esCSVValido = (cadena) => {
+        const regex = /^(\d+)(,\s*\d+)*$/;
+        return regex.test(cadena);
+      };
+
+      const mostrarInfo = (resultado) => {
+        let info = "Info sobre el número";
+        if (resultado === 0) {
+          info = "Info: El resultado es igual a 0";
+        } else if (resultado < 100) {
+          info = "Info: El resultado es menor que 100";
+        } else if (resultado >= 100 && resultado < 201) {
+          info = "Info: El resultado está entre 100 y 200";
+        } else if (resultado >= 200) {
+          info = "Info: El resultado es superior a 200";
+        }
+        document.getElementById("info").innerText = info;
+      };
+
+      const rellenar_info = () => {
+        const resultado = parseInt(document.getElementById("pantalla").value);
+        mostrarInfo(resultado);
+      };
+
+      const opbin = (param) => {
+        n1 = parseInt(document.getElementById("pantalla").value);
+        if (validar(n1)) {
+          operador = param;
+          operacionrealizada = true;
+          vaciar();
+        } else {
+          alert("Por favor, introduce un número válido.");
+        }
+      };
+
+      const eq = () => {
+        n2 = parseInt(document.getElementById("pantalla").value);
+        if (validar(n2)) {
+          if (operacionrealizada == true) {
+            switch (operador) {
+              case "+":
+                resultado = n1 + n2;
+                break;
+              case "-":
+                resultado = n1 - n2;
+                break;
+              case "*":
+                resultado = n1 * n2;
+                break;
+              case "/":
+                if (n2 !== 0) {
+                  resultado = n1 / n2;
+                } else {
+                  alert("No se puede dividir por cero.");
+                  return;
+                }
+                break;
+              default:
+                alert("Operación no válida.");
+                return;
+            }
+          }
+          operacionrealizada = false;
+          document.getElementById("pantalla").value = resultado;
+          mostrarInfo(resultado);
+        } else {
+          alert("Por favor, introduce un número válido.");
+        }
+      };
+
+      const sumatorio = () => {
+        const input = document.getElementById("pantalla").value;
+        if (esCSVValido(input)) {
+          const numeros = input.split(",").map(Number);
+          const suma = numeros.reduce((total, num) => total + num, 0);
+          document.getElementById("pantalla").value = suma;
+          mostrarInfo(suma);
+        } else {
+          alert("Por favor, ingrese un CSV válido");
+        }
+      };
+
+      const ordenar = () => {
+        const lista = document.getElementById("pantalla").value;
+        if (esCSVValido(lista)) {
+          let matlista = lista.split(",");
+          let orde = matlista.sort((a, b) => a - b);
+          document.getElementById("pantalla").value = orde.join(",");
+        } else {
+          alert("Por favor, ingrese un CSV válido");
+        }
+      };
+
+      const revertir = () => {
+        const input = document.getElementById("pantalla").value;
+        if (esCSVValido(input)) {
+          const numeros = input.split(",").reverse();
+          document.getElementById("pantalla").value = numeros.join(",");
+        } else {
+          alert("Por favor, ingrese un CSV válido");
+        }
+      };
+      const quitar = () => {
+        const input = document.getElementById("pantalla").value;
+        if (esCSVValido(input)) {
+          let lista = input.split(",");
+          let elim = lista.pop();
+          document.getElementById("pantalla").value = lista.join(",");
+        } else {
+          alert("Por favor, ingrese un CSV válido");
+        }
+      };
+
+      const validar = (num) => {
+        return !isNaN(parseFloat(num));
+      };
+    </script>
+  </head>
+  <body>
+    <main>
+      <div class="calcu">
+        <h1>CALCULADORA CORE</h1>
+      </div>
+      <div class="input">
+        Número:
+        <input type="text" id="pantalla" onclick="vaciar()" />
+      </div>
+      <br />
+      <div id="info">
+        <h2 class="grande" title="Info sobre el número">
+          Info sobre el número
+        </h2>
+      </div>
+      <h3>Operaciones Unitarias</h3>
+
+      <button id="cuadrado" onclick="cuadrado()">X<sup>2</sup></button>
+      <button id="modulo" onclick="mod()">Mod</button>
+      <button id="factorial" onclick="fact()">Factorial</button>
+
+      <h3>Operaciones Binarias</h3>
+      <button id="suma" onclick="opbin('+')">+</button>
+      <button id="resta" onclick="opbin('-')">-</button>
+      <button id="multiplicacion" onclick="opbin('*')">*</button>
+      <button id="division" onclick="opbin('/')">/</button>
+      <button id="igual" onclick="eq()">=</button>
+      <h3>Operaciones Formato CSV</h3>
+      <button id="sumatorio" onclick="sumatorio()">sumatorio</button>
+      <button id="ordenar" onclick="ordenar()">Ordenar</button>
+      <button id="revertir" onclick="revertir()">revertir</button>
+      <button id="quitar" onclick="quitar()">Quitar</button>
+    </main>
+  </body>
+</html>
